@@ -1,0 +1,16 @@
+ install.packages("tm")
+ install.packages("/dcs/pg11/phil/reuters/tm.corpus.Reuters21578/", repos = NULL, type="source")
+ require(tm)
+ require(tm.corpus.Reuters21578)
+ data(Reuters21578)
+ rt <- Reuters21578
+ reuters <- tm_map(reuters,rt)
+ reuters <- tm_map(rt,PlainTextDocument)
+ reuters <- tm_map(reuters, stripWhitespace)
+ reuters <- tm_map(reuters, tolower)
+ reuters <- tm_map(reuters, removeWords, stopwords("english"))
+ tm_map(reuters, stemDocument)
+ 
+ install.packages("topicmodels")
+ require(topicmodels)
+ 
