@@ -2,6 +2,10 @@
  install.packages("/dcs/pg11/phil/reuters/tm.corpus.Reuters21578/", repos = NULL, type="source")
  require(tm)
  require(tm.corpus.Reuters21578)
+ install.packages("topicmodels")
+ require(topicmodels)
+ 
+ 
  data(Reuters21578)
  rt <- Reuters21578
  reuters <- tm_map(reuters,rt)
@@ -9,8 +13,15 @@
  reuters <- tm_map(reuters, stripWhitespace)
  reuters <- tm_map(reuters, tolower)
  reuters <- tm_map(reuters, removeWords, stopwords("english"))
- tm_map(reuters, stemDocument)
+ reuters <- tm_map(reuters, stemDocument)
+ #data cleaning
+ reuters <-tm_map(reuters,removeWords,'said')
+ cleaningdata <- DocumentTermMatrix(reuters)
+ cleaningdata <-removeSparseTerms(cleaningdata ,sparse=0.995) 
  
- install.packages("topicmodels")
- require(topicmodels)
  
+# apply LDA method 
+
+ data <- LDA(cleaningdata,control=list(alpha=0.1),k=10)
+ 
+ terms(data)
